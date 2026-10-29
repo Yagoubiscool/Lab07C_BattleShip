@@ -1,0 +1,59 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class BattleshipGUI {
+    - board: Board
+    - cellButtons: JButton[][]
+    - missCounter: int
+    - strikeCounter: int
+    - totalMissCounter: int
+    - totalHitCounter: int
+    + BattleshipGUI()
+    - initComponents(): void
+    - handleCellClick(row: int, col: int): void
+    - updateLabels(): void
+    - confirmPlayAgain(): void
+    - confirmQuit(): void
+    - promptPlayAgain(): void
+    - resetGame(): void
+    + {static} main(args: String[]): void
+}
+
+class Board {
+    + {static} SIZE: int
+    - grid: char[][]
+    - shipGrid: Ship[][]
+    - ships: List<Ship>
+    - random: Random
+    + Board()
+    - initializeBoard(): void
+    - placeShips(): void
+    - canPlaceShip(ship: Ship, row: int, col: int, horizontal: boolean): boolean
+    - executeShipPlacement(ship: Ship, row: int, col: int, horizontal: boolean): void
+    + fireShot(row: int, col: int): ShotResult
+    + allShipsSunk(): boolean
+}
+
+class Ship {
+    - size: int
+    - hits: int
+    - sunk: boolean
+    + Ship(size: int)
+    + registerHit(): boolean
+    + getSize(): int
+    + getHits(): int
+    + isSunk(): boolean
+}
+
+enum ShotResult {
+    HIT
+    MISS
+    ALREADY_HIT
+    SUNK
+}
+
+BattleshipGUI --> Board : manages / uses
+Board o-- Ship : contains (5, 4, 3, 3, 2)
+Board +-- ShotResult
+
+@enduml
